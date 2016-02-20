@@ -170,7 +170,6 @@
 
 	    			allClasses = data;
 	    			classes = allClasses;
-	    			console.log(allClasses);
 	    			
 	    			updateList();
 	    		}catch(err){

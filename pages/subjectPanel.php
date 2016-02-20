@@ -17,7 +17,16 @@
 
 	<div class="container">
 		<h1 class="page-header">Painel de Matérias</h1>
-
+		<div class="panel panel-default">
+		  	<div class="panel-body">
+		  		<div class="row">
+		  			<div class="col-md-12">
+				  		<label for="search_box">Procurar: </label>
+				 		<input id="search_box" type="text" class="form-control" placeholder="Procurar"/>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="table-responsive">
 			<table class="table  table-hover">
 				<thead>
@@ -26,21 +35,7 @@
 					<td><b>Edit</b></td>
 					<td><b>Delete</b></td>
 				</thead>
-				<tbody id="list">
-					<?php 
-						//Verificar se o usuario possui permissão de acessar essa pagina
-						include "../cfg/mysql.php";
-
-						$query = "select id, name, description from subjects;";
-						$r = mysql_query($query);
-						if(!$r) die("<span style='color:red'>Error: </span>".mysql_error());
-
-						while($l = mysql_fetch_array($r))
-							echo "<tr id='sub".$l['id']."'><td>".$l['name']."</td><td>".$l['description']."</td><td><a href='subjectEdit.php?id=".$l['id']."'><button class='btn btn-default'><span class='glyphicon glyphicon-pencil'></span></button></a></td><td><a href='php/remove.php?type=subject&url=subjectPanel.php&id=".$l['id']."'><button class='btn btn-default'><span class=' glyphicon glyphicon-trash'></span></button></a></td></tr>";
-						
-
-					?>
-				</tbody>
+				<tbody id="list"></tbody>
 			</table>
 		</div>
 		<br>
@@ -51,6 +46,47 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-select.js"></script
+    <script src="js/bootstrap-select.js"></script>
+
+     <script type="text/javascript">
+    	var subjects;
+    	var allSubjects;
+    	var sWord;
+
+    	$(window ).on("load", function (){
+    		$.get("php/select.php?type=subject", function (data){
+	    		try{
+	    			data = $.parseJSON(data);
+	    			
+	    			allSubjects = data;
+	    			subjects = allSubjects;
+	    			updateList();
+	    		}catch(err){
+	    			console.log(err);
+	    			alert(err);
+	    		}
+	    	});
+
+	    	$('#search_box').on('input',function(e){
+	    		sWord = $("#search_box").val().toLowerCase();
+	    		if(sWord == null)
+	    			sWord = "";
+		    	subjects = allSubjects.filter(function (el,i){
+					return el['name'].toLowerCase().indexOf(sWord) != -1;
+				});
+
+				updateList();
+		    });
+    	});
+
+		//Atualiza a lista da tabela.
+		function updateList(){
+			$("#list").html("");
+			for(var i = 0; i < subjects.length; ++i){
+				$("#list").html($("#list").html()+"<tr id='sub"+subjects[i]['id']+"'><td>"+subjects[i]['name']+"</td><td>"+subjects[i]['description']+"</td><td><a href='subjectEdit.php?id="+subjects[i]['id']+"'><button class='btn btn-default'><span class='glyphicon glyphicon-pencil'></span></button></a></td><td><a href='php/remove.php?type=subject&url=subjectPanel.php&id="+subjects[i]['id']+"'><button class='btn btn-default'><span class=' glyphicon glyphicon-trash'></span></button></a></td></tr>");
+			}
+			return;
+		}
+    </script>
 </body>
 </html>

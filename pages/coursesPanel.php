@@ -107,7 +107,6 @@
 
 	    			allCourses = data;
 	    			courses = allCourses;
-	  				console.log(courses);
 	  				updateList();
 	    		}catch(err){
 	    			console.log(err);
