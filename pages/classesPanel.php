@@ -89,10 +89,10 @@
 
     	var allClasses;
     	var classes;
+    	var sWord;
 
     	//Quando a página carregar, carrega as listas.
     	$(window ).on("load", function(){
-
     		//Pega a lista de matérias
 	    	$.get("php/select.php?type=subject", function (data){
 	    		try{
@@ -119,6 +119,10 @@
 							classes = allClasses.filter(function (el,i){
 								return subjects[subject_selected]['id'] == el['subject_id'];
 							});
+							if(sWord != null && sWord != "")
+								classes = classes.filter(function (el,i){
+									return el['name'].toLowerCase().indexOf(sWord) != -1;
+								});
 						}
 						update("courses");
 						updateList();
@@ -145,6 +149,10 @@
 							classes = allClasses.filter(function (el,i){
 									return courses[course_selected]['id'] == el['course_id'];
 							});
+							if(sWord != null && sWord != "")
+								classes = classes.filter(function (el,i){
+									return el['name'].toLowerCase().indexOf(sWord) != -1;
+								});
 						}else
 							classes = allClasses;
 						updateList();
@@ -170,6 +178,22 @@
 	    			alert(err);
 	    		}
 	    	});
+
+	    	$('#search_box').on('input',function(e){
+	    		sWord = $("#search_box").val().toLowerCase();
+		    	classes = allClasses.filter(function (el,i){
+					return el['name'].toLowerCase().indexOf(sWord) != -1;
+				});
+				if(subject_selected != null && subject_selected != '-1')
+					classes = classes.filter(function (el,i){
+						return el['subject_id'] == subjects[subject_selected]['id'];
+					});
+				if(course_selected != null && course_selected != '-1')
+					classes = classes.filter(function (el,i){
+						return el['course_id'] == courses[course_selected]['id'];
+					});
+				updateList();
+		    });
     	});
 
 	//Atualiza as listas com o que deve ser mostrado.

@@ -21,6 +21,9 @@
 		case 'course':
 			$query = "select * from courses".((sizeof($filters) != 0) ? generateFilters($filters, $values) : "").";";
 			break;
+		case 'courseAndSub':
+			$query = "select courses.*, subjects.name sname from courses, subjects where courses.subject_id = subjects.id;";
+			break;
 		case 'subject':
 			$query = "select * from subjects".((sizeof($filters) != 0) ? generateFilters($filters, $values) : "").";";
 			break;
