@@ -6,4 +6,5 @@
 	$db = "final";
 
 	if(!mysql_connect($host, $username, $password) || !mysql_select_db($db)) die("<b style='color:red'>Erro ao conectar: </b>".mysql_error()."");
+	mysql_set_charset('utf8');
 ?>
