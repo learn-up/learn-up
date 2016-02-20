@@ -17,6 +17,10 @@
 	<div class="container">
 		<h1 class="page-header">Painel de Conteúdos</h1>
 		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Panel 1</h3>
+				<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
 		  	<div class="panel-body">
 		  		<div class="row">
 		  			<div class="col-md-6">
@@ -57,7 +61,7 @@
     <script type="text/javascript">
     	var subjects;
     	var allSubjects;
-    	var subject_selected;
+    	var subject_selected=<?php echo isset($_GET['subject']) ? $_GET['subject'] : -1; ?>;
     	var allCourses;
     	var courses;
     	var sWord;
@@ -74,6 +78,7 @@
 						$("#subjects").html($("#subjects").html()+"<option value='"+i+"'>"+subjects[i]['name']+"</option>");
 					
 				    $("#subjects").selectpicker('refresh');
+
 					
 					// Filtra a lista de conteúdos de acordo com a matéria selecionada.
 					$('#subjects').on('change', function(){
@@ -94,6 +99,7 @@
 						}
 						updateList();
 					});
+					check();
 	    		}catch(err){
 	    			console.log(err);
 	    			alert(err);
@@ -108,6 +114,7 @@
 	    			allCourses = data;
 	    			courses = allCourses;
 	  				updateList();
+	  				check();
 	    		}catch(err){
 	    			console.log(err);
 	    			alert(err);
@@ -139,6 +146,35 @@
 			}
 			return;
 		}
+
+		function check(){
+			if(subject_selected != '-1' && allCourses != null && allSubjects != null){
+				console.log(subject_selected);
+				var x = -1;
+				for(var i = 0; i < subjects.length; ++i)
+					x = (subjects[i]['id'] == subject_selected) ? i : x;
+
+				$('#subjects').selectpicker('val', x);
+				$('#subjects').trigger('change');
+			}
+		}
+
+		 jQuery(function ($) {
+        $('.panel-heading span.clickable').on("click", function (e) {
+            if ($(this).hasClass('panel-collapsed')) {
+                // expand the panel
+                $(this).parents('.panel').find('.panel-body').slideDown();
+                $(this).removeClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+            else {
+                // collapse the panel
+                $(this).parents('.panel').find('.panel-body').slideUp();
+                $(this).addClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+        });
+    });
     </script>
 
 </body>

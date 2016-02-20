@@ -32,6 +32,7 @@
 				<thead>
 					<td><b>Name</b></td>
 					<td><b>Description</b></td>
+					<td><b>Find</b></td>
 					<td><b>Edit</b></td>
 					<td><b>Delete</b></td>
 				</thead>
@@ -83,7 +84,7 @@
 		function updateList(){
 			$("#list").html("");
 			for(var i = 0; i < subjects.length; ++i){
-				$("#list").html($("#list").html()+"<tr id='sub"+subjects[i]['id']+"'><td>"+subjects[i]['name']+"</td><td>"+subjects[i]['description']+"</td><td><a href='subjectEdit.php?id="+subjects[i]['id']+"'><button class='btn btn-default'><span class='glyphicon glyphicon-pencil'></span></button></a></td><td><a href='php/remove.php?type=subject&url=subjectPanel.php&id="+subjects[i]['id']+"'><button class='btn btn-default'><span class=' glyphicon glyphicon-trash'></span></button></a></td></tr>");
+				$("#list").html($("#list").html()+"<tr id='sub"+subjects[i]['id']+"'><td>"+subjects[i]['name']+"</td><td>"+subjects[i]['description']+"</td><td><a href='coursesPanel.php?subject="+subjects[i]['id']+"'><button class='btn btn-default'><span class='glyphicon glyphicon-search'></span></button></a></td><td><a href='subjectEdit.php?id="+subjects[i]['id']+"'><button class='btn btn-default'><span class='glyphicon glyphicon-pencil'></span></button></a></td><td><a href='php/remove.php?type=subject&url=subjectPanel.php&id="+subjects[i]['id']+"'><button class='btn btn-default'><span class=' glyphicon glyphicon-trash'></span></button></a></td></tr>");
 			}
 			return;
 		}
